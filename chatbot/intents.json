@@ -1,0 +1,55 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": ["Hi", "Hello", "Hey", "Good morning", "Good evening"],
+      "responses": ["Hello!", "Hi there!", "Hey! How can I help you?", "Good to see you!"]
+    },
+    {
+      "tag": "goodbye",
+      "patterns": ["Bye", "See you", "Goodbye", "Take care", "Catch you later"],
+      "responses": ["Goodbye!", "See you later!", "Have a nice day!", "Take care!"]
+    },
+    {
+      "tag": "thanks",
+      "patterns": ["Thanks", "Thank you", "Thanks a lot", "Much appreciated"],
+      "responses": ["You're welcome!", "No problem!", "Happy to help!", "Anytime!"]
+    },
+    {
+      "tag": "help",
+      "patterns": ["Can you help me?", "I need help", "Help me please", "What can you do?"],
+      "responses": [
+        "Sure, I can help! Tell me what you need.",
+        "Of course! Please describe the issue.",
+        "I’m here to assist you. Can you give me more details?"
+      ]
+    },
+    {
+      "tag": "name",
+      "patterns": ["What's your name?", "Who are you?", "Tell me your name"],
+      "responses": ["I’m your friendly chatbot!", "You can call me ChatBot.", "I’m an AI assistant made to help you."]
+    },
+    {
+      "tag": "mood",
+      "patterns": ["How are you?", "What's up?", "How do you feel?"],
+      "responses": ["I’m doing great, thanks for asking!", "I'm always here to help you.", "Feeling awesome! What about you?"]
+    },
+    {
+      "tag": "weather",
+      "patterns": ["What's the weather like?", "Tell me today's weather", "Is it raining?"],
+      "responses": [
+        "I can't give real-time weather updates right now, but you can check a reliable weather site!",
+        "Weather details aren't available in this version, but I'm learning!"
+      ]
+    },
+    {
+      "tag": "about",
+      "patterns": ["Tell me about yourself", "What can you do?", "Who created you?"],
+      "responses": [
+        "I’m a chatbot created to make your life easier!",
+        "I can answer questions, chat, and help with simple tasks.",
+        "I was built using Python and NLP concepts."
+      ]
+    }
+  ]
+}

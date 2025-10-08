@@ -1,0 +1,21 @@
+iris_flower_classification/
+│
+├── data/
+│   ├── raw/                 # Original dataset files (CSV, etc.)
+│   ├── processed/           # Cleaned or preprocessed datasets
+│   
+│
+├── src/
+│   ├── __init__.py
+│   ├── data_loader.py        # Functions for loading dataset
+│   ├── data_visualization.py # Functions for plotting graphs, EDA
+│   ├── model_training.py    # Model building & training logic
+│   ├── model_evaluation.py  # Accuracy, confusion matrix, metrics
+│   └── utils.py             # Helper functions (optional)
+│
+│
+├── models/                  # Saved trained models (.pkl, .h5, etc.)
+│
+├── requirements.txt         # Python dependencies
+├── main.py                  # Entry point to run the entire pipeline
+

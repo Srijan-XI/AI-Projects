@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Chatbot Interface</title>
+    <link rel="stylesheet" href="static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="header">
+            <h1>Chatbot</h1>
+        </div>
+        <div id="chat-box" aria-live="polite" aria-atomic="false"></div>
+        <div class="input-section">
+            <input type="text" id="user-input" placeholder="Type your message..." aria-label="Message input" autofocus>
+            <button id="send-button" aria-label="Send message">Send</button>
+        </div>
+    </div>
+    <script src="static/script.js"></script>
+</body>
+</html>
