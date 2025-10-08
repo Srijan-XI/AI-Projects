@@ -1,0 +1,5 @@
+# Ignore all CSV files in any data directory
+*/data/*.csv
+*/data/**/*.csv
+# Ignore all CSV files in the repo (optional, uncomment if needed)
+# *.csv
