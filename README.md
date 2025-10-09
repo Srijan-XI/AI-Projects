@@ -80,8 +80,8 @@ This repository contains a collection of AI and machine learning projects, each 
 ## General Getting Started
 1. Clone the repository and navigate to the desired project folder:
 	 ```bash
-	 git clone <repository-url>
-	 cd <project-folder>
+	 git clone https://github.com/Srijan-XI/AI-Projects.git
+	 cd AI-Projects/
 	 ```
 2. Install dependencies:
 	 ```bash
@@ -95,6 +95,16 @@ PDF reports for some projects are available in the `Z report/` folder.
 ## Contributing
 Contributions are welcome! Please fork the repository and create a pull request with your changes.
 
+## Datasets & repository status
+Some projects include datasets that are large and therefore excluded from the Git history in this repository. Notable example:
+
+- `credit_card_fraud_detection/data/creditcard.csv` is intentionally excluded because it is ~144 MB (GitHub file size limit is 100 MB). If you need to run that project locally, download the dataset from Kaggle:
+
+	1. Visit: https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud
+	2. Download `creditcard.csv` and place it at `credit_card_fraud_detection/data/creditcard.csv`.
+
+If you prefer to store large datasets in the repository using Git LFS, you can initialize and track the file with Git LFS instead. See https://git-lfs.github.com/ for setup instructions.
+
 ## License
-This repository is licensed under the MIT License. See the LICENSE file for more details.# AI-Projects-Repository
+This repository is licensed under the MIT License. See the LICENSE file for more details.
 
