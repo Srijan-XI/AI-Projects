@@ -1,5 +1,18 @@
-# Ignore all CSV files in any data directory
+# Large datasets (CSV) — keep out of Git history
+# Specific known large file
+credit_card_fraud_detection/data/creditcard.csv
+
+# Common data folders across projects
 */data/*.csv
 */data/**/*.csv
-# Ignore all CSV files in the repo (optional, uncomment if needed)
-# *.csv
+
+# Jupyter and Python cache
+.ipynb_checkpoints/
+**/__pycache__/
+*.pyc
+
+# Model artifacts
+*/models/*.pkl
+*/models/**/*.pkl
+*/models/*.h5
+*/models/**/*.h5
