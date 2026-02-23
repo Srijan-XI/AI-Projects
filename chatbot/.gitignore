@@ -5,6 +5,11 @@ __pycache__/
 *.pyd
 *.pyc
 
+# ── SQLite Database ───────────────────────────────────────
+chatbot.db
+*.db-shm
+*.db-wal
+
 # ── Virtual Environment ───────────────────────────────────
 .venv/
 venv/

@@ -18,6 +18,7 @@ from tensorflow.keras.models import load_model
 
 from api_manager    import api_manager                    # central API + rate-limit manager
 from ollama_manager import ollama_manager, SUPPORTED_MODELS  # local Ollama LLM manager
+from database       import db                               # SQLite persistence layer
 
 # ─────────────────────────────────────────────────────────────────────────────
 # BOOT
@@ -129,31 +130,36 @@ def chatbot_response():
     if not msg:
         return jsonify({"response": "Please type a message!"}), 400
 
-    # 4. Predict intent
+    # 4. Log user message
     ints = predict_class(msg)
     top_intent = ints[0]['intent'] if ints else None
+    db.log_message(client_ip, "user", msg, model="nlp", intent=top_intent)
 
     # 5. Joke intent → call live Jokes API
     if top_intent == "joke":
-        return jsonify({"response": api_manager.get_joke(client_ip=client_ip)})
+        reply = api_manager.get_joke(client_ip=client_ip)
+        db.log_message(client_ip, "bot", reply, model="nlp", intent=top_intent)
+        return jsonify({"response": reply})
 
     # 6. Weather intent → call live Weather API
     if top_intent == "weather":
         city = extract_city(msg)
         if city:
             weather_text = api_manager.get_weather(city, client_ip=client_ip)
+            db.log_message(client_ip, "bot", weather_text, model="nlp", intent=top_intent)
             return jsonify({"response": weather_text})
         else:
-            # No city detected — ask the user
-            return jsonify({
-                "response": (
-                    "🌍 Sure! Which city would you like the weather for?\n"
-                    "Try: _\"What's the weather in London?\"_"
-                )
-            })
+            reply = (
+                "🌍 Sure! Which city would you like the weather for?\n"
+                "Try: _\"What's the weather in London?\"_"
+            )
+            db.log_message(client_ip, "bot", reply, model="nlp", intent=top_intent)
+            return jsonify({"response": reply})
 
     # 7. All other intents → canned response
-    return jsonify({"response": get_canned_response(ints)})
+    reply = get_canned_response(ints)
+    db.log_message(client_ip, "bot", reply, model="nlp", intent=top_intent)
+    return jsonify({"response": reply})
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -185,7 +191,9 @@ def ollama_chat():
     if not msg:
         return jsonify({"response": "Please type a message!"}), 400
 
+    db.log_message(sid, "user", msg, model=model)
     reply = ollama_manager.chat(msg, model=model, session_id=sid)
+    db.log_message(sid, "bot",  reply, model=model)
     return jsonify({"response": reply, "model": model, "session_id": sid})
 
 
@@ -214,11 +222,15 @@ def ollama_stream():
     model = (data.get("model") or "llama3.2").strip()
     sid   = (data.get("session_id") or client_ip)
 
+    db.log_message(sid, "user", msg, model=model)
+
     def generate():
         full = ""
         for chunk in ollama_manager.stream_chat(msg, model=model, session_id=sid):
             full += chunk
             yield f"data: {_json.dumps({'delta': chunk})}\n\n"
+        # Log the complete streamed reply once finished
+        db.log_message(sid, "bot", full, model=model)
         yield f"data: {_json.dumps({'done': True, 'model': model})}\n\n"
 
     return Response(
@@ -245,12 +257,28 @@ def ollama_models():
 
 @app.route("/api/ollama/clear", methods=["POST"])
 def ollama_clear():
-    """Wipe conversation history for this session."""
+    """Wipe in-memory Ollama history AND SQLite history for this session."""
     client_ip = request.headers.get("X-Forwarded-For", request.remote_addr) or "unknown"
     data = request.get_json(silent=True) or request.form
     sid  = data.get("session_id") or client_ip
     ollama_manager.clear_history(sid)
-    return jsonify({"cleared": True, "session_id": sid})
+    deleted = db.clear_history(sid)
+    return jsonify({"cleared": True, "session_id": sid, "rows_deleted": deleted})
+
+
+@app.route("/api/stats", methods=["GET"])
+def chat_stats():
+    """Return aggregate chat statistics from the SQLite database."""
+    return jsonify(db.get_stats())
+
+
+@app.route("/api/history", methods=["GET"])
+def chat_history():
+    """Return message history for a session (query param: ?session_id=...). """
+    client_ip = request.headers.get("X-Forwarded-For", request.remote_addr) or "unknown"
+    sid   = request.args.get("session_id", client_ip)
+    limit = min(int(request.args.get("limit", 50)), 200)
+    return jsonify({"session_id": sid, "messages": db.get_history(sid, limit=limit)})
 
 
 if __name__ == "__main__":
