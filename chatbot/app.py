@@ -1,3 +1,7 @@
+import os
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 from flask import Flask, render_template, request, jsonify
 import random
 import json
@@ -12,7 +16,7 @@ lemmatizer = WordNetLemmatizer()
 app = Flask(__name__)
 
 model = load_model('chatbot_model.h5')
-intents = json.loads(open('intents.json').read())
+intents = json.loads(open('intents.json', encoding='utf-8').read())
 words = pickle.load(open('words.pkl', 'rb'))
 classes = pickle.load(open('classes.pkl', 'rb'))
 
