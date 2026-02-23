@@ -1,0 +1,49 @@
+# ── Python ────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# ── Virtual Environment ───────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── Trained Model Artifacts ───────────────────────────────
+# Uncomment below if you want to exclude large model files from git
+# chatbot_model.h5
+# words.pkl
+# classes.pkl
+
+# ── Environment Variables / Secrets ───────────────────────
+.env
+.env.*
+*.secret
+
+# ── Jupyter ───────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb
+
+# ── Distribution / Build ──────────────────────────────────
+dist/
+build/
+*.egg-info/
+site/
+
+# ── Coverage & Testing ────────────────────────────────────
+.coverage
+htmlcov/
+.pytest_cache/
+
+# ── IDE & Editor ──────────────────────────────────────────
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ── OS Junk ───────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -2,3 +2,4 @@ flask
 numpy
 tensorflow
 nltk
+requests

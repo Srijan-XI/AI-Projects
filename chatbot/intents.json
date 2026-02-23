@@ -125,11 +125,27 @@
         "Is it raining?",
         "Weather today",
         "Will it rain?",
-        "Is it sunny?"
+        "Is it sunny?",
+        "How's the weather?",
+        "What's the weather in London?",
+        "Weather in Paris",
+        "Weather in New York",
+        "What is the weather in Tokyo?",
+        "Weather forecast for Delhi",
+        "Temperature in Mumbai",
+        "Is it cold in Berlin?",
+        "Is it hot outside?",
+        "What's the forecast?",
+        "Tell me the temperature",
+        "Is it snowing?",
+        "How is the weather outside?",
+        "Current weather",
+        "Weather report"
       ],
       "responses": [
-        "I can't fetch live weather data right now, but check weather.com or Google for instant updates! 🌤️",
-        "I don't have real-time data, but a quick Google search will have the answer in seconds! ☀️"
+        "Let me check the live weather for you! 🌍",
+        "Fetching real-time weather data now! ☀️",
+        "One moment — pulling up the latest weather! 🌤️"
       ]
     },
     {
