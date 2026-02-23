@@ -21,14 +21,20 @@ Usage
     stats   = db.get_stats()
 """
 
+import os
 import sqlite3
 import threading
 from datetime import datetime, timezone
 from pathlib import Path
+from dotenv import load_dotenv
 
 # ── Config ───────────────────────────────────────────────────────────────────
 
-DB_PATH = Path(__file__).parent / "chatbot.db"
+load_dotenv(Path(__file__).parent / ".env")
+
+# DB_PATH can be overridden in .env:  DB_PATH=chatbot.db  or  DB_PATH=/data/chat.db
+_db_env = os.getenv("DB_PATH", "chatbot.db")
+DB_PATH = Path(_db_env) if Path(_db_env).is_absolute() else Path(__file__).parent / _db_env
 
 # ── Schema ───────────────────────────────────────────────────────────────────
 

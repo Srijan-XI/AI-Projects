@@ -3,7 +3,10 @@ ollama_manager.py
 =================
 Manager for local Ollama LLM inference.
 
-Server  : http://localhost:11434  (Ollama default)
+Hosts (tried in order — first live host wins):
+  1. http://localhost:11434   (primary)
+  2. http://127.0.0.1:11434  (backup / explicit loopback)
+
 Models  : llama3.2:latest | gemma3:4b
 
 Endpoints used:
@@ -12,6 +15,7 @@ Endpoints used:
   POST /api/generate      — single-turn generation (no history)
 
 Features:
+  - Automatic host failover (primary → backup on connection error)
   - Model switching at runtime (llama3.2 ↔ gemma3:4b)
   - Per-session conversation history (multi-turn memory)
   - Configurable system prompt per model
@@ -25,15 +29,31 @@ Usage from app.py:
 """
 
 import json
+import os
 import requests
+from pathlib import Path
 from typing import Iterator
+from dotenv import load_dotenv
+
+# Load .env from the project root (same directory as this file)
+load_dotenv(Path(__file__).parent / ".env")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# CONSTANTS
+# CONSTANTS  (overridable via .env)
 # ─────────────────────────────────────────────────────────────────────────────
 
-OLLAMA_BASE_URL = "http://localhost:11434"
+# Primary host is tried first; backup is used automatically on connection failure.
+# Override via .env:  OLLAMA_HOST / OLLAMA_HOST_BACKUP
+OLLAMA_HOSTS: list[str] = [
+    os.getenv("OLLAMA_HOST",        "http://localhost:11434"),   # primary
+    os.getenv("OLLAMA_HOST_BACKUP", "http://127.0.0.1:11434"),  # backup
+]
+# Deduplicate while preserving order (in case both vars are set to same value)
+OLLAMA_HOSTS = list(dict.fromkeys(OLLAMA_HOSTS))
+
+# Keep the legacy single-URL constant for backward compatibility
+OLLAMA_BASE_URL = OLLAMA_HOSTS[0]
 
 # Canonical model names as registered in Ollama
 SUPPORTED_MODELS: dict[str, str] = {
@@ -55,9 +75,9 @@ SYSTEM_PROMPTS: dict[str, str] = {
     ),
 }
 
-DEFAULT_MODEL = "llama3.2:latest"
-TIMEOUT_SECONDS = 90          # generation can take time on CPU
-HEALTH_TIMEOUT  = 3           # fast fail for availability checks
+DEFAULT_MODEL   = "llama3.2:latest"
+TIMEOUT_SECONDS = int(os.getenv("OLLAMA_TIMEOUT",        "90"))  # override via .env
+HEALTH_TIMEOUT  = int(os.getenv("OLLAMA_HEALTH_TIMEOUT", "3"))   # override via .env
 MAX_HISTORY     = 20          # max messages kept per session (rolling window)
 
 
@@ -75,6 +95,20 @@ class OllamaClient:
         self.base_url = base_url.rstrip("/")
         self._session = requests.Session()
         self._session.headers.update({"Content-Type": "application/json"})
+
+    # ── host probing ──────────────────────────────────────────────────────────
+
+    @classmethod
+    def try_hosts(cls, hosts: list[str] = OLLAMA_HOSTS) -> "OllamaClient | None":
+        """
+        Probe each URL in `hosts` in order and return an OllamaClient pointed
+        at the first one that responds.  Returns None if all hosts are down.
+        """
+        for url in hosts:
+            candidate = cls(url)
+            if candidate.is_running():
+                return candidate
+        return None
 
     # ── health ────────────────────────────────────────────────────────────────
 
@@ -221,9 +255,33 @@ class OllamaManager:
     """
 
     def __init__(self):
-        self.client       = OllamaClient(OLLAMA_BASE_URL)
-        self._history:  dict[str, list[dict]] = {}   # session_id → message list
-        self._active_model: str = DEFAULT_MODEL       # server-side canonical name
+        # Start with the primary host; _get_client() will failover lazily.
+        self.client         = OllamaClient(OLLAMA_HOSTS[0])
+        self._history:      dict[str, list[dict]] = {}   # session_id → message list
+        self._active_model: str = DEFAULT_MODEL           # server-side canonical name
+        self._active_host:  str = OLLAMA_HOSTS[0]         # currently live host URL
+
+    # ── failover helper ───────────────────────────────────────────────────────
+
+    def _get_client(self) -> OllamaClient:
+        """
+        Return a live OllamaClient, automatically switching to the next host
+        in OLLAMA_HOSTS if the current one is no longer reachable.
+
+        Priority order:
+          1. http://localhost:11434   (primary)
+          2. http://127.0.0.1:11434  (backup)
+        """
+        if self.client.is_running():
+            return self.client
+
+        # Current host is down — probe all hosts for a live one
+        live = OllamaClient.try_hosts(OLLAMA_HOSTS)
+        if live:
+            self.client       = live
+            self._active_host = live.base_url
+            print(f"[OllamaManager] ⚡ Switched to backup host: {live.base_url}")
+        return self.client   # may still be down; callers handle the error
 
     # ── internal helpers ──────────────────────────────────────────────────────
 
@@ -261,29 +319,32 @@ class OllamaManager:
     # ── public API ────────────────────────────────────────────────────────────
 
     def is_available(self) -> bool:
-        """Return True if Ollama is running and reachable."""
-        return self.client.is_running()
+        """Return True if any Ollama host is running and reachable."""
+        return self._get_client().is_running()
 
     def status(self) -> dict:
         """
         Return a status dict for the /api/ollama/status endpoint.
         {
           "running": bool,
+          "host": "http://...",
           "available_models": [...],
           "supported_models": {...},
           "active_model": "..."
         }
         """
-        running = self.client.is_running()
+        client  = self._get_client()
+        running = client.is_running()
         available: list[str] = []
         if running:
             try:
-                available = self.client.model_names()
+                available = client.model_names()
             except Exception:
                 available = []
 
         return {
             "running":           running,
+            "host":              self._active_host,
             "available_models":  available,
             "supported_models":  SUPPORTED_MODELS,
             "active_model":      self._active_model,
@@ -324,15 +385,17 @@ class OllamaManager:
         """
         if not self.is_available():
             return (
-                "⚠️ Ollama is not running. Please start it with `ollama serve` "
-                "and make sure your models are pulled."
+                "⚠️ Ollama is not running on any known host. "
+                f"Tried: {', '.join(OLLAMA_HOSTS)}. "
+                "Please start it with `ollama serve` and make sure your models are pulled."
             )
 
+        client   = self._get_client()
         resolved = self._resolve_model(model)
 
         # Validate the model is actually available
         try:
-            available = self.client.model_names()
+            available = client.model_names()
         except Exception:
             available = []
 
@@ -346,7 +409,7 @@ class OllamaManager:
         messages = self._build_messages(session_id, resolved, user_text)
 
         try:
-            response = self.client.chat(messages, model=resolved, stream=False, options=options)
+            response = client.chat(messages, model=resolved, stream=False, options=options)
             reply = response.get("message", {}).get("content", "").strip()
             if not reply:
                 return "🤔 The model returned an empty response. Please try again."
@@ -359,7 +422,9 @@ class OllamaManager:
                 "Try a shorter prompt or switch to a smaller model."
             )
         except requests.exceptions.ConnectionError:
-            return "🌐 Lost connection to Ollama. Is it still running on port 11434?"
+            # Current host dropped mid-request — force re-probe on next call
+            self.client = OllamaClient(OLLAMA_HOSTS[0])
+            return f"🌐 Lost connection to Ollama ({self._active_host}). Retrying on next message."
         except requests.exceptions.RequestException as exc:
             return f"❌ Ollama error: {exc}"
 
@@ -383,15 +448,19 @@ class OllamaManager:
                 yield f"data: {json.dumps({'done': True})}\\n\\n"
         """
         if not self.is_available():
-            yield "⚠️ Ollama is not running. Please start it with `ollama serve`."
+            yield (
+                "⚠️ Ollama is not running on any known host. "
+                f"Tried: {', '.join(OLLAMA_HOSTS)}. Start it with `ollama serve`."
+            )
             return
 
-        resolved = self._resolve_model(model)
-        messages = self._build_messages(session_id, resolved, user_text)
+        client     = self._get_client()
+        resolved   = self._resolve_model(model)
+        messages   = self._build_messages(session_id, resolved, user_text)
         full_reply = ""
 
         try:
-            for chunk in self.client.chat(messages, model=resolved, stream=True, options=options):
+            for chunk in client.chat(messages, model=resolved, stream=True, options=options):
                 full_reply += chunk
                 yield chunk
             if full_reply:
@@ -400,7 +469,9 @@ class OllamaManager:
         except requests.exceptions.Timeout:
             yield "\n\n⏱️ Response timed out."
         except requests.exceptions.ConnectionError:
-            yield "\n\n🌐 Lost connection to Ollama."
+            # Force re-probe on next call
+            self.client = OllamaClient(OLLAMA_HOSTS[0])
+            yield f"\n\n🌐 Lost connection to Ollama ({self._active_host}). Retrying on next message."
         except requests.exceptions.RequestException as exc:
             yield f"\n\n❌ Error: {exc}"
 

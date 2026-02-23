@@ -1,4 +1,10 @@
 import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+# Load .env first — before any other config reads
+load_dotenv(Path(__file__).parent / ".env")
+
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
@@ -27,6 +33,7 @@ from database       import db                               # SQLite persistence
 BASE_DIR   = Path(__file__).parent
 lemmatizer = WordNetLemmatizer()
 app        = Flask(__name__)
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev-secret-key-change-me")
 
 model = load_model(BASE_DIR / 'chatbot_model.h5', compile=False)
 with open(BASE_DIR / 'intents.json', encoding='utf-8') as _f:
