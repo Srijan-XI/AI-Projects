@@ -1,0 +1,18 @@
+# Large datasets (CSV) — keep out of Git history
+# Specific known large file
+credit_card_fraud_detection/data/creditcard.csv
+
+# Common data folders across projects
+*/data/*.csv
+*/data/**/*.csv
+
+# Jupyter and Python cache
+.ipynb_checkpoints/
+**/__pycache__/
+*.pyc
+
+# Model artifacts
+*/models/*.pkl
+*/models/**/*.pkl
+*/models/*.h5
+*/models/**/*.h5

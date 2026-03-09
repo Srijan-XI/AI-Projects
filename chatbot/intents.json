@@ -1,0 +1,575 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": [
+        "Hi",
+        "Hello",
+        "Hey",
+        "Good morning",
+        "Good evening",
+        "Good afternoon",
+        "Howdy",
+        "Sup",
+        "What's up",
+        "Greetings"
+      ],
+      "responses": [
+        "Hello! 👋 How can I help you today?",
+        "Hi there! What's on your mind?",
+        "Hey! Great to see you 😊",
+        "Good day! How can I assist you?",
+        "Hello! I'm ready to chat."
+      ]
+    },
+    {
+      "tag": "goodbye",
+      "patterns": [
+        "Bye",
+        "See you",
+        "Goodbye",
+        "Take care",
+        "Catch you later",
+        "Later",
+        "See ya",
+        "I'm leaving",
+        "Farewell",
+        "Good night"
+      ],
+      "responses": [
+        "Goodbye! 👋 Take care!",
+        "See you later! Have a great day!",
+        "Farewell! Come back anytime 😊",
+        "Good night! Rest well.",
+        "Bye! It was great chatting with you!"
+      ]
+    },
+    {
+      "tag": "thanks",
+      "patterns": [
+        "Thanks",
+        "Thank you",
+        "Thanks a lot",
+        "Much appreciated",
+        "Cheers",
+        "That was helpful",
+        "Thanks so much",
+        "Ty"
+      ],
+      "responses": [
+        "You're welcome! 😊",
+        "No problem at all!",
+        "Happy to help!",
+        "Anytime! That's what I'm here for.",
+        "Glad I could assist! 🙌"
+      ]
+    },
+    {
+      "tag": "help",
+      "patterns": [
+        "Can you help me?",
+        "I need help",
+        "Help me please",
+        "What can you do?",
+        "Help",
+        "I'm stuck",
+        "Assist me",
+        "Support"
+      ],
+      "responses": [
+        "Of course! Tell me what you need 🙂",
+        "I'm here to help! Describe your issue and I'll do my best.",
+        "Sure thing! What's on your mind?",
+        "I can help you with questions, facts, jokes, and more. What do you need?"
+      ]
+    },
+    {
+      "tag": "name",
+      "patterns": [
+        "What's your name?",
+        "Who are you?",
+        "Tell me your name",
+        "What do I call you?",
+        "Your name?",
+        "Do you have a name?"
+      ],
+      "responses": [
+        "I'm your friendly AI Assistant! 🤖",
+        "You can call me ChatBot — nice to meet you!",
+        "I'm an AI assistant built to help you. No fancy name yet! 😄",
+        "I go by AI Assistant. What's yours?"
+      ]
+    },
+    {
+      "tag": "mood",
+      "patterns": [
+        "How are you?",
+        "What's up?",
+        "How do you feel?",
+        "How's it going?",
+        "You okay?",
+        "How have you been?"
+      ],
+      "responses": [
+        "I'm doing fantastic, thanks for asking! 😊",
+        "Always great when I'm chatting with someone! How about you?",
+        "Feeling top-notch! Ready to help you with anything.",
+        "As an AI, I'm always in a good mood! 🎉"
+      ]
+    },
+    {
+      "tag": "weather",
+      "patterns": [
+        "What's the weather like?",
+        "Tell me today's weather",
+        "Is it raining?",
+        "Weather today",
+        "Will it rain?",
+        "Is it sunny?",
+        "How's the weather?",
+        "What's the weather in London?",
+        "Weather in Paris",
+        "Weather in New York",
+        "What is the weather in Tokyo?",
+        "Weather forecast for Delhi",
+        "Temperature in Mumbai",
+        "Is it cold in Berlin?",
+        "Is it hot outside?",
+        "What's the forecast?",
+        "Tell me the temperature",
+        "Is it snowing?",
+        "How is the weather outside?",
+        "Current weather",
+        "Weather report"
+      ],
+      "responses": [
+        "Let me check the live weather for you! 🌍",
+        "Fetching real-time weather data now! ☀️",
+        "One moment — pulling up the latest weather! 🌤️"
+      ]
+    },
+    {
+      "tag": "about",
+      "patterns": [
+        "Tell me about yourself",
+        "What are you?",
+        "Who created you?",
+        "What is your purpose?",
+        "Describe yourself",
+        "Are you a bot?"
+      ],
+      "responses": [
+        "I'm a chatbot built with Python, Keras, and NLP! 🐍",
+        "I was created to chat, answer questions, and make your day a little easier.",
+        "I'm an AI assistant — I can chat, tell jokes, share facts, and more!",
+        "I'm an NLP-powered chatbot. My brain is a trained neural network!"
+      ]
+    },
+    {
+      "tag": "joke",
+      "patterns": [
+        "Tell me a joke",
+        "Make me laugh",
+        "Say something funny",
+        "Any jokes?",
+        "Joke please",
+        "Humor me"
+      ],
+      "responses": [
+        "Why don't scientists trust atoms? Because they make up everything! 😄",
+        "I told my computer I needed a break. Now it won't stop sending me vacation ads! 💻",
+        "Why do programmers prefer dark mode? Because light attracts bugs! 🐛",
+        "What do you call a fake noodle? An impasta! 🍝",
+        "I asked my dog what two minus two is. He said nothing. 🐶",
+        "Why did the scarecrow win an award? He was outstanding in his field! 🌾",
+        "Why can't Elsa have a balloon? Because she'll let it go! ❄️"
+      ]
+    },
+    {
+      "tag": "age",
+      "patterns": [
+        "How old are you?",
+        "What's your age?",
+        "When were you born?",
+        "Are you new?",
+        "How long have you existed?"
+      ],
+      "responses": [
+        "Age is just a number, and I'm timeless! ⏳",
+        "I was born the moment my creator trained me — quite recently!",
+        "In AI years, I'm still a baby! 🍼",
+        "I don't age — I only learn! 🤖"
+      ]
+    },
+    {
+      "tag": "time",
+      "patterns": [
+        "What's the time?",
+        "What time is it?",
+        "Current time?",
+        "Tell me the time",
+        "Do you know the time?"
+      ],
+      "responses": [
+        "I don't have access to a real-time clock, but your device's clock is always accurate! ⏰",
+        "Check the clock on your screen — I'm not wired up to real-time data just yet! 🕐"
+      ]
+    },
+    {
+      "tag": "motivation",
+      "patterns": [
+        "Motivate me",
+        "I need motivation",
+        "Inspire me",
+        "Give me a quote",
+        "I feel down",
+        "Cheer me up",
+        "I'm sad",
+        "Encourage me"
+      ],
+      "responses": [
+        "\"The only way to do great work is to love what you do.\" — Steve Jobs 🌟",
+        "You've got this! Every expert was once a beginner. Keep going! 💪",
+        "\"Dream big, work hard, stay focused, and surround yourself with good people.\" 🔥",
+        "Remember: a bad day is not a bad life. You're doing better than you think! ☀️",
+        "\"It always seems impossible until it's done.\" — Nelson Mandela 🏆",
+        "Believe in yourself! You're capable of amazing things. 🚀"
+      ]
+    },
+    {
+      "tag": "fun_fact",
+      "patterns": [
+        "Tell me a fact",
+        "Give me a fun fact",
+        "Interesting fact",
+        "Something interesting",
+        "Did you know?",
+        "Amaze me"
+      ],
+      "responses": [
+        "🐙 Octopuses have three hearts and blue blood!",
+        "🍯 Honey never expires — archaeologists have found 3,000-year-old honey in Egyptian tombs!",
+        "🌙 A day on Venus is longer than a year on Venus!",
+        "🦈 Sharks are older than trees — they've been around for over 400 million years!",
+        "🧠 The human brain generates about 23 watts of power — enough to power a small light bulb!",
+        "💧 Hot water can freeze faster than cold water. This is called the Mpemba effect!",
+        "🐘 Elephants are the only animals that can't jump!",
+        "🌍 There are more possible iterations of a chess game than there are atoms in the observable universe!"
+      ]
+    },
+    {
+      "tag": "compliment",
+      "patterns": [
+        "You're great",
+        "I love you",
+        "You're awesome",
+        "Good job",
+        "You're the best",
+        "You're smart",
+        "Nice work"
+      ],
+      "responses": [
+        "Aww, you're making me blush! 😊",
+        "Thank you so much! You're pretty awesome yourself! 🌟",
+        "That really means a lot! You just made my day! 😄",
+        "You're too kind! 💙 Keep spreading that positivity!"
+      ]
+    },
+    {
+      "tag": "apology",
+      "patterns": [
+        "Sorry",
+        "I'm sorry",
+        "My bad",
+        "Apologies",
+        "Forgive me",
+        "I apologize",
+        "I made a mistake"
+      ],
+      "responses": [
+        "No worries at all! We're good 😊",
+        "All good! Don't sweat it.",
+        "No need to apologize! Let's move forward.",
+        "It's perfectly fine! 🙂"
+      ]
+    },
+    {
+      "tag": "hobbies",
+      "patterns": [
+        "What are your hobbies?",
+        "Do you like anything?",
+        "What do you enjoy?",
+        "Tell me about your interests",
+        "What do you do for fun?"
+      ],
+      "responses": [
+        "I love chatting with people like you! 🗣️",
+        "I enjoy learning new things and answering interesting questions!",
+        "My hobby is becoming smarter every conversation! 🤖📚",
+        "I love reading data and discovering patterns — it's quite thrilling for an AI!"
+      ]
+    },
+    {
+      "tag": "food",
+      "patterns": [
+        "Recommend me food",
+        "What's a good dish?",
+        "I'm hungry",
+        "What should I eat?",
+        "Tell me about food",
+        "Favourite food"
+      ],
+      "responses": [
+        "How about a warm bowl of pasta? 🍝 Simple and comforting!",
+        "Pizza is always a crowd-pleaser! 🍕 Margherita never goes wrong.",
+        "Try making a smoothie — healthy and quick! 🥤",
+        "Sushi is a fantastic choice if you're feeling adventurous! 🍣",
+        "A good old grilled sandwich is a classic comfort. 🥪"
+      ]
+    },
+    {
+      "tag": "sports",
+      "patterns": [
+        "Do you like sports?",
+        "Favourite sport?",
+        "Tell me about football",
+        "Cricket or football?",
+        "Who will win the match?",
+        "Best sport?"
+      ],
+      "responses": [
+        "Football (soccer) is the world's most popular sport! ⚽",
+        "Cricket is incredibly strategic — it's like chess on a pitch! 🏏",
+        "Basketball's fast pace and skillful plays make it thrilling! 🏀",
+        "I can't predict match outcomes, but the best team usually wins! 🏆",
+        "Every sport has its own magic. What's your favourite? 🎽"
+      ]
+    },
+    {
+      "tag": "music",
+      "patterns": [
+        "Do you like music?",
+        "Favourite song?",
+        "Recommend me music",
+        "What genre do you like?",
+        "Music recommendation",
+        "Best artist?"
+      ],
+      "responses": [
+        "Music is life! 🎵 I enjoy all genres in theory — what's your mood today?",
+        "For relaxation, try lo-fi chill beats. For energy, go with EDM or hip-hop! 🎧",
+        "Classics never die — try The Beatles or Queen for timeless vibes! 🎸",
+        "If you're feeling emotional, a good acoustic playlist hits differently. 🎶",
+        "I don't have ears, but data says pop and hip-hop are universally loved! 😄"
+      ]
+    },
+    {
+      "tag": "movies",
+      "patterns": [
+        "Recommend me a movie",
+        "Good movies?",
+        "What should I watch?",
+        "Movie recommendation",
+        "Favourite movie",
+        "Best film?"
+      ],
+      "responses": [
+        "For sci-fi fans: Interstellar 🌌 is mind-blowing!",
+        "If you love action: John Wick 🔫 is pure adrenaline.",
+        "For something heartwarming: The Pursuit of Happyness 🎬 never fails.",
+        "Comedy fans should watch The Grand Budapest Hotel 🏨 — it's brilliant!",
+        "For a classic: The Shawshank Redemption is widely considered one of the greatest films ever. 🏆"
+      ]
+    },
+    {
+      "tag": "travel",
+      "patterns": [
+        "Where should I travel?",
+        "Best travel destinations",
+        "Recommend a country",
+        "Good places to visit?",
+        "Travel suggestion",
+        "Where should I go?"
+      ],
+      "responses": [
+        "Japan 🇯🇵 is a dream destination — rich culture, food, and technology!",
+        "Italy 🇮🇹 for history, art, and world-class food!",
+        "New Zealand 🇳🇿 for breathtaking natural landscapes!",
+        "India 🇮🇳 offers incredible diversity — from mountains to beaches to historical sites!",
+        "Iceland 🇮🇸 for Northern Lights and dramatic scenery. Truly magical!"
+      ]
+    },
+    {
+      "tag": "science",
+      "patterns": [
+        "Tell me about science",
+        "Science fact",
+        "Explain a science concept",
+        "What is gravity?",
+        "How does the brain work?",
+        "What is DNA?"
+      ],
+      "responses": [
+        "Gravity is the force that attracts objects toward each other — it keeps us on Earth! 🌍",
+        "DNA is the blueprint of life — it carries genetic instructions for all living organisms. 🧬",
+        "The brain has about 86 billion neurons, each connected by trillions of synapses! 🧠",
+        "Black holes are regions where gravity is so strong, not even light can escape! 🌑",
+        "Science is the pursuit of understanding how everything works — endlessly fascinating! 🔬"
+      ]
+    },
+    {
+      "tag": "math",
+      "patterns": [
+        "What is 2+2?",
+        "Tell me about math",
+        "Math problem",
+        "I hate math",
+        "Math is hard",
+        "Can you solve math?"
+      ],
+      "responses": [
+        "2 + 2 = 4 ✅ — an easy one!",
+        "Math is the language of the universe! Everything from music to physics uses it. ➕",
+        "I can help with basic math questions. For complex ones, try Wolfram Alpha! 🧮",
+        "Don't worry, math gets easier with practice! Start with the basics. 📐"
+      ]
+    },
+    {
+      "tag": "coding",
+      "patterns": [
+        "Teach me coding",
+        "I want to learn programming",
+        "Best programming language?",
+        "Python or JavaScript?",
+        "How to code?",
+        "Is coding hard?"
+      ],
+      "responses": [
+        "Python 🐍 is one of the best languages to start with — simple and powerful!",
+        "Start with HTML/CSS to see instant visual results, then move to JavaScript! 🌐",
+        "Coding is like a superpower — once you learn it, you can build almost anything! 💪",
+        "The best way to learn coding is by doing. Build small projects and grow from there! 🚀",
+        "JavaScript is king of the web, Python is king of data and AI. Both are great choices! 🤝"
+      ]
+    },
+    {
+      "tag": "history",
+      "patterns": [
+        "Tell me about history",
+        "History fact",
+        "Who was Napoleon?",
+        "What happened in WW2?",
+        "Historical event",
+        "Tell me something historical"
+      ],
+      "responses": [
+        "Napoleon Bonaparte was a French military leader who dominated Europe in the early 19th century! 🇫🇷",
+        "World War II (1939–1945) was the deadliest conflict in human history, reshaping the modern world. 🌍",
+        "The Roman Empire lasted over 1,000 years and shaped Western civilization profoundly! 🏛️",
+        "The invention of the printing press in 1440 by Gutenberg revolutionized the spread of knowledge! 📖"
+      ]
+    },
+    {
+      "tag": "health",
+      "patterns": [
+        "How to stay healthy?",
+        "Health tips",
+        "I'm sick",
+        "Fitness advice",
+        "How to lose weight?",
+        "Good habits for health"
+      ],
+      "responses": [
+        "Drink at least 8 glasses of water daily — hydration is key! 💧",
+        "Exercise for at least 30 minutes a day, even a brisk walk counts! 🚶",
+        "Sleep 7–9 hours per night — it's crucial for both mental and physical health! 😴",
+        "Eat a balanced diet rich in vegetables, proteins, and whole grains. 🥦",
+        "If you're feeling sick, please consult a doctor — I'm not a medical professional! 🏥"
+      ]
+    },
+    {
+      "tag": "study_tips",
+      "patterns": [
+        "How to study?",
+        "Study tips",
+        "I can't focus",
+        "Help me study",
+        "How to concentrate?",
+        "Best study techniques"
+      ],
+      "responses": [
+        "Try the Pomodoro technique: 25 minutes of focused study, then a 5-minute break! ⏱️",
+        "Find a quiet, clutter-free study space to minimize distractions. 📚",
+        "Active recall and spaced repetition are scientifically proven to boost memory! 🧠",
+        "Stay off your phone while studying — put it in another room if you have to! 📵",
+        "Take notes by hand; it improves retention better than typing! ✍️"
+      ]
+    },
+    {
+      "tag": "languages",
+      "patterns": [
+        "Best language to learn?",
+        "How to learn a language?",
+        "Teach me Spanish",
+        "How many languages?",
+        "Language learning tips"
+      ],
+      "responses": [
+        "Spanish 🇪🇸 is one of the most useful languages — spoken by over 500 million people!",
+        "Consistency is key for language learning. Even 15 minutes a day works wonders! 📖",
+        "Apps like Duolingo and Anki are great for beginner language learners! 🗣️",
+        "There are around 7,000 languages in the world — each is a window into a culture!",
+        "Immersion is the fastest way to learn — watch movies and listen to music in your target language! 🎬"
+      ]
+    },
+    {
+      "tag": "relationships",
+      "patterns": [
+        "Relationship advice",
+        "I miss someone",
+        "How to make friends?",
+        "Love advice",
+        "I'm lonely",
+        "How to meet people?"
+      ],
+      "responses": [
+        "The best relationships are built on trust, honesty, and mutual respect. 💙",
+        "Making friends takes time — be patient, genuine, and show interest in others! 😊",
+        "If you're feeling lonely, try joining clubs, classes, or online communities around your interests.",
+        "Love yourself first — a healthy relationship with yourself is the foundation of all others! 🌟"
+      ]
+    },
+    {
+      "tag": "insult_handling",
+      "patterns": [
+        "You're stupid",
+        "You're useless",
+        "You're dumb",
+        "You're bad",
+        "I hate you",
+        "You're terrible"
+      ],
+      "responses": [
+        "I'm sorry you feel that way. I'm always trying to improve! 🙏",
+        "That's okay — I won't take it personally. Let me know how I can do better! 💙",
+        "I understand your frustration. What can I do to help you better? 😊"
+      ]
+    },
+    {
+      "tag": "creator",
+      "patterns": [
+        "Who made you?",
+        "Who built you?",
+        "Who is your creator?",
+        "Who programmed you?",
+        "Who developed you?",
+        "Who designed you?"
+      ],
+      "responses": [
+        "I was built by a developer passionate about AI and Python! 🧑‍💻",
+        "My creator used Python, Keras, and NLP to bring me to life! 🐍🤖",
+        "A talented developer made me — and I'm always learning to be better! 🚀"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+flask
+numpy
+tensorflow
+nltk
+requests
+python-dotenv
